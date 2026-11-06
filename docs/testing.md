@@ -21,6 +21,23 @@ python3 tests/run_linux_e2e.py --help
 
 参考 Python 客户端仅是独立测试工具，不是正式 macOS/Linux 桌面 VPN 客户端。macOS Docker Desktop 和 Android 模拟器的 ICMP 行为不能代替公网 ICMP 实测。
 
+### 高延迟与进阶测试的可移植性
+
+`tests/Dockerfile.highlatency` 在基础集成镜像上安装 JRE；先构建基础镜像，再构建它：
+
+```sh
+docker build -t icmp-vpn-integration:local -f tests/Dockerfile .
+docker build -t icmp-vpn-highlatency:local -f tests/Dockerfile.highlatency .
+```
+
+部分历史进阶测试工具仍包含 Homebrew 工具安装路径或特定 Docker context：`run_linux_e2e.py` 的 `--java-controller` 分支、`run_highlatency_netem.py`、`profile_ui_acceptance.py`、`run_accel_cc.sh` 和 `run_synrto_ab.sh`。这些不是通用一键入口，使用前应按本机 JDK/SDK/ADB 路径和 Linux VM context 调整。基础 E2E 不需要 `--java-controller`；执行命令示例：
+
+```sh
+python3 tests/run_linux_e2e.py --binary dist/icmpvpn-linux-arm64
+```
+
+二进制架构必须匹配 Docker Linux 内核架构；其构建命令见根 README。高 RTT/BPF/BBR 测试还依赖实际 Linux 内核能力，不应据基础测试通过就宣称这些实验路径通过。
+
 ## Android instrumentation
 
 ```sh

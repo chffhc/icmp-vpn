@@ -14,7 +14,7 @@ Checks rerun while preparing the public source snapshot on 2026-11-06. These res
 - Android lint: zero errors, four warnings.
 - Isolated Linux-container end-to-end test: authenticated ICMP + real TUN/NAT; exact 65536-byte TCP upload and download, 10 exact UDP datagrams, controlled DNS response, target source matching server NAT identity. Reference client created its ping socket as UID 65534 with zero effective capabilities. A direct-eth0 rejection rule prevented target bypass. Test containers and temporary network were removed by the harness.
 
-The public snapshot replaces one private-LAN address in a destination-policy test with a generic RFC1918 address. Application/transport implementation files otherwise retain the original project's bytes. Operational deployment wrappers and private records are not included.
+The public snapshot replaces one private-LAN address in a destination-policy test with a generic RFC1918 address and fixes the high-latency test Dockerfile's self-referential base image to use the basic integration image. Application/transport implementation files otherwise retain the original project's bytes. Operational deployment wrappers and private records are not included.
 
 ## Not rerun for this publication
 
