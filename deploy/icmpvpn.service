@@ -1,0 +1,27 @@
+[Unit]
+Description=ICMP VPN server
+Requires=icmpvpn-net.service
+After=icmpvpn-net.service
+PartOf=icmpvpn-net.service
+
+[Service]
+Type=simple
+ExecStart=/opt/icmpvpn/icmpvpn serve --key-file /etc/icmpvpn/key --tun icmpvpn0 --listen 0.0.0.0
+Restart=on-failure
+RestartSec=3
+# Least privilege: raw ICMP + TUN attach only.
+CapabilityBoundingSet=CAP_NET_RAW CAP_NET_ADMIN
+AmbientCapabilities=CAP_NET_RAW CAP_NET_ADMIN
+NoNewPrivileges=yes
+ProtectSystem=strict
+ReadWritePaths=/etc/icmpvpn
+ProtectHome=yes
+PrivateTmp=yes
+ProtectKernelModules=yes
+ProtectControlGroups=yes
+RestrictAddressFamilies=AF_INET AF_UNIX AF_NETLINK
+LockPersonality=yes
+MemoryDenyWriteExecute=yes
+
+[Install]
+WantedBy=multi-user.target

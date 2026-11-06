@@ -1,0 +1,25 @@
+# Build products and local caches
+**/build/
+**/dist/
+**/.gradle/
+**/__pycache__/
+**/local.properties
+*.pyc
+.DS_Store
+.idea/
+# Private keys, credentials and session state
+.env
+.env.*
+*.key
+*.psk
+*.sessions
+*.keystore
+*.jks
+*.pem
+*.p12
+# Private deployment records, backups and packet captures
+/backups/
+/deployments/
+*.pcap
+*.pcapng
+*.log

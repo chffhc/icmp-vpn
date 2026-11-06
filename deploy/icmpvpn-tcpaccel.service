@@ -1,0 +1,35 @@
+[Unit]
+Description=ICMP VPN split-TCP accelerator (tunnel client TCP only)
+# Fail-open: if the proxy stops or crashes, ExecStopPost removes the redirect
+# and tunnel TCP is forwarded directly again by the kernel.
+After=icmpvpn-net.service icmpvpn.service
+BindsTo=icmpvpn-net.service
+PartOf=icmpvpn-net.service
+
+[Service]
+Type=simple
+# Clear a stale redirect left by an unclean exit before starting again.
+ExecStartPre=-/opt/icmpvpn/tcpaccel-network.sh down
+ExecStart=/opt/icmpvpn/icmpvpn-tcpaccel tcpaccel --listen 10.77.0.1:7011 --congestion bbr --client-pacing 3400000 --client-sndbuf 16777216 --syn-rto 3s --admit-queue 7011
+# Needs nfnetlink_queue + xt_NFQUEUE preloaded (/etc/modules-load.d/icmpvpn-tcpaccel.conf):
+# ProtectKernelModules blocks autoload. Queue is --queue-bypass (fail-open).
+# Redirect only after the listener is up (avoid RST window).
+ExecStartPost=/bin/sh -c 'for i in $(seq 100); do ss -Hltn "sport = :7011" | grep -q 7011 && exec env ADMIT_QUEUE=7011 /opt/icmpvpn/tcpaccel-network.sh up 4096; sleep 0.1; done; echo listener not up >&2; exit 1'
+ExecStopPost=-/opt/icmpvpn/tcpaccel-network.sh down
+Restart=on-failure
+RestartSec=2
+CapabilityBoundingSet=CAP_NET_ADMIN CAP_NET_RAW CAP_BPF
+AmbientCapabilities=CAP_NET_ADMIN CAP_NET_RAW CAP_BPF
+NoNewPrivileges=yes
+ProtectSystem=strict
+ReadWritePaths=/run
+ProtectHome=yes
+PrivateTmp=yes
+ProtectKernelModules=yes
+ProtectControlGroups=yes
+RestrictAddressFamilies=AF_INET AF_UNIX AF_NETLINK
+LockPersonality=yes
+MemoryDenyWriteExecute=yes
+
+[Install]
+WantedBy=multi-user.target

@@ -1,0 +1,42 @@
+{
+  "note": "Public deterministic TEST key, NEVER deploy this key",
+  "psk_hex": "000102030405060708090a0b0c0d0e0f101112131415161718191a1b1c1d1e1f",
+  "vectors": [
+    {
+      "direction": 0,
+      "kind": 2,
+      "session_id_hex": "0102030405060708",
+      "sequence": 1,
+      "plaintext_hex": "",
+      "key_hex": "e999cd2a1f2c7b0009c57152c8756cdd534ffd796487e9b0b623b320b4a13f8f",
+      "frame_hex": "49565031010201020304050607080000000000000001000090859e307d59b5397da8ef249955e06b"
+    },
+    {
+      "direction": 1,
+      "kind": 2,
+      "session_id_hex": "0102030405060708",
+      "sequence": 1,
+      "plaintext_hex": "31302e37372e302e327c31323030",
+      "key_hex": "c148fa9c3155c451745186a171e52a8bad1544550fc79936c5e7c89d209e3b5f",
+      "frame_hex": "49565031010201020304050607080000000000000001000e64c63d705434acea7506c2041990466cd83571413b9b6b123259bbd1183d"
+    },
+    {
+      "direction": 0,
+      "kind": 0,
+      "session_id_hex": "0102030405060708",
+      "sequence": 2,
+      "plaintext_hex": "",
+      "key_hex": "e999cd2a1f2c7b0009c57152c8756cdd534ffd796487e9b0b623b320b4a13f8f",
+      "frame_hex": "495650310100010203040506070800000000000000020000d333377007db301fcc2c0c4bee7511a8"
+    },
+    {
+      "direction": 1,
+      "kind": 1,
+      "session_id_hex": "0102030405060708",
+      "sequence": 2,
+      "plaintext_hex": "450000140001000040010000010101010a4d0002",
+      "key_hex": "c148fa9c3155c451745186a171e52a8bad1544550fc79936c5e7c89d209e3b5f",
+      "frame_hex": "49565031010101020304050607080000000000000002001425595dbaed702bf300db38291e5ecaf3ca3d57784cc10da2697d81a0be5704a38a7b70da"
+    }
+  ]
+}

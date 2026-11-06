@@ -1,0 +1,14 @@
+[Unit]
+Description=ICMP VPN owned TUN/NAT forwarding rules (icmpvpn0 only)
+After=network-online.target docker.service
+Wants=network-online.target
+
+[Service]
+Type=oneshot
+RemainAfterExit=yes
+# Only the dedicated icmpvpn0 TUN, IVP1_FORWARD and IVP1_NAT chains are created/removed.
+ExecStart=/opt/icmpvpn/setup-network.sh up ens5
+ExecStop=/opt/icmpvpn/setup-network.sh down
+
+[Install]
+WantedBy=multi-user.target
